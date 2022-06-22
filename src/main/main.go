@@ -1,15 +1,21 @@
 package main
 
 import (
+	"fmt"
 	"src/pkg/models"
 )
 
 func main() {
 	list := models.LinkedList{}
 
-	list.Push(20)
-	list.Push(30) // next -> nil
-	list.Push(40)
+	for i := 1; i <= 10; i++ {
+		list.Push(i)
+	}
 
 	list.Print()
+
+	fmt.Println()
+	fmt.Println()
+
+	list.PrintExplicitly()
 }

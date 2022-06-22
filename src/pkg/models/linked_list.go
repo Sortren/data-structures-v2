@@ -2,7 +2,6 @@ package models
 
 import (
 	"fmt"
-	"strconv"
 )
 
 type Queue interface {
@@ -14,9 +13,29 @@ type Stack interface {
 	Push(value int)
 }
 type Node struct {
-	Value int
-	Next  *Node
-	// Previous *Node
+	Value    int
+	Next     *Node
+	Previous *Node
+}
+
+func (node *Node) printExplicitly() {
+	// print the node in the explicit way with each its properties (Next and Previous)
+
+	fmt.Println("[", node.Value, " next->", node.Next, " previous->", node.Previous, "]")
+}
+
+func (node *Node) print(listLength int, delimeter string, isFirst bool) {
+	// print the node in the regular list way [val1, val2, val3, ...]
+
+	if listLength > 1 {
+		if isFirst {
+			fmt.Print(node.Value)
+		} else {
+			fmt.Print(delimeter, node.Value)
+		}
+	} else {
+		fmt.Println("[", node.Value, "]")
+	}
 }
 
 // LIFO and FIFO queueing
@@ -31,14 +50,14 @@ func (list *LinkedList) GetTail() *Node {
 		return list.Head // returns nil if list is empty
 
 	} else {
-		currentNode := *list.Head
+		currentNode := list.Head
 
 		for currentNode.Next != nil {
-			currentNode = *currentNode.Next
+			currentNode = currentNode.Next
 		}
 
-		fmt.Println("Returning tail")
-		return &currentNode
+		// fmt.Println("Returning tail ", currentNode)
+		return currentNode
 	}
 }
 
@@ -54,6 +73,7 @@ func (list *LinkedList) Push(value int) {
 
 	} else {
 		// Tagging node with its previous node
+		node.Previous = tail
 
 		//adding node as a new tail
 		tail.Next = node // change nil pointer in tail.Next to new node item
@@ -62,21 +82,40 @@ func (list *LinkedList) Push(value int) {
 }
 
 func (list *LinkedList) Print() {
-	values := ""
+	if list.Length == 0 {
+		fmt.Println("[ ]")
+	}
 
 	if list.Length == 1 {
-		values = strconv.Itoa(list.GetTail().Value)
+		list.GetTail().print(list.Length, "", true)
 	}
 
 	if list.Length > 1 {
 		currentNode := *list.Head
-		values += strconv.Itoa(currentNode.Value)
+
+		fmt.Print("[")
+		currentNode.print(list.Length, "", true)
 
 		for currentNode.Next != nil {
 			currentNode = *currentNode.Next
-			values += ", " + strconv.Itoa(currentNode.Value)
+			currentNode.print(list.Length, ", ", false)
 		}
+		fmt.Print("]")
+	}
+}
+
+func (list *LinkedList) PrintExplicitly() {
+	if list.Length == 1 {
+		list.GetTail().printExplicitly()
 	}
 
-	fmt.Printf("[%s]\n", values)
+	if list.Length > 1 {
+		currentNode := *list.Head
+		currentNode.printExplicitly()
+
+		for currentNode.Next != nil {
+			currentNode = *currentNode.Next
+			currentNode.printExplicitly()
+		}
+	}
 }
