@@ -21,5 +21,12 @@ func main() {
 	fmt.Println()
 	fmt.Println()
 
+	fmt.Println("Popping value")
+	val := list.Pop()
+	fmt.Println(val)
+
+	fmt.Println()
+
 	list.PrintExplicitly()
+	fmt.Println(list.GetTail())
 }

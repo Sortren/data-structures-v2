@@ -9,7 +9,7 @@ type Queue interface {
 }
 
 type Stack interface {
-	Pop() Node
+	Pop() int
 	Append(value int)
 }
 type Node struct {
@@ -61,6 +61,7 @@ func (list *LinkedList) GetTail() *Node {
 	}
 }
 
+// LIFO
 func (list *LinkedList) Append(value int) {
 	node := &Node{Value: value, Next: nil}
 
@@ -81,10 +82,20 @@ func (list *LinkedList) Append(value int) {
 	}
 }
 
+// FIFO
 func (list *LinkedList) Push(value int) {
 	node := &Node{Value: value, Next: list.Head, Previous: nil}
 	list.Head.Previous = node
 	list.Head = node
+}
+
+func (list *LinkedList) Pop() int {
+	tail := list.GetTail()
+	prevOfTail := list.GetTail().Previous
+	prevOfTail.Next = nil
+	tail.Previous = nil
+
+	return tail.Value
 }
 
 func (list *LinkedList) Print() {
