@@ -8,7 +8,11 @@ import (
 func main() {
 	list := models.LinkedList{}
 
-	for i := 1; i <= 10; i++ {
+	for i := 1; i <= 5; i++ {
+		list.Append(i)
+	}
+
+	for i := 10; i >= 5; i-- {
 		list.Push(i)
 	}
 

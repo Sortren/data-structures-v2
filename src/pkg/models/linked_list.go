@@ -5,12 +5,12 @@ import (
 )
 
 type Queue interface {
-	Append(value int)
+	Push(value int)
 }
 
 type Stack interface {
 	Pop() Node
-	Push(value int)
+	Append(value int)
 }
 type Node struct {
 	Value    int
@@ -61,7 +61,7 @@ func (list *LinkedList) GetTail() *Node {
 	}
 }
 
-func (list *LinkedList) Push(value int) {
+func (list *LinkedList) Append(value int) {
 	node := &Node{Value: value, Next: nil}
 
 	tail := list.GetTail() // pointer to the node object without next node item
@@ -79,6 +79,12 @@ func (list *LinkedList) Push(value int) {
 		tail.Next = node // change nil pointer in tail.Next to new node item
 		list.Length++
 	}
+}
+
+func (list *LinkedList) Push(value int) {
+	node := &Node{Value: value, Next: list.Head, Previous: nil}
+	list.Head.Previous = node
+	list.Head = node
 }
 
 func (list *LinkedList) Print() {
