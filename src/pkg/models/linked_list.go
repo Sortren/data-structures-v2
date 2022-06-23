@@ -4,27 +4,27 @@ import (
 	"fmt"
 )
 
-type Queue interface {
-	Push(value int)
+type Queue[T any] interface {
+	Push(value T)
 }
 
-type Stack interface {
-	Pop() int
-	Append(value int)
+type Stack[T any] interface {
+	Pop() T
+	Append(value T)
 }
-type Node struct {
-	Value    int
-	Next     *Node
-	Previous *Node
+type Node[T any] struct {
+	Value    T
+	Next     *Node[T]
+	Previous *Node[T]
 }
 
-func (node *Node) printExplicitly() {
+func (node *Node[T]) printExplicitly() {
 	// print the node in the explicit way with each its properties (Next and Previous)
 
 	fmt.Println("[", node.Value, " next->", node.Next, " previous->", node.Previous, "]")
 }
 
-func (node *Node) print(listLength int, delimeter string, isFirst bool) {
+func (node *Node[T]) print(listLength int, delimeter string, isFirst bool) {
 	// print the node in the regular list way [val1, val2, val3, ...]
 
 	if listLength > 1 {
@@ -39,12 +39,12 @@ func (node *Node) print(listLength int, delimeter string, isFirst bool) {
 }
 
 // LIFO and FIFO queueing
-type LinkedList struct {
-	Head   *Node
+type LinkedList[T any] struct {
+	Head   *Node[T]
 	Length int
 }
 
-func (list *LinkedList) GetTail() *Node {
+func (list *LinkedList[T]) GetTail() *Node[T] {
 	if list.Head == nil || list.Head.Next == nil {
 		// List is empty or has one item which is head
 		return list.Head // returns nil if list is empty
@@ -62,8 +62,8 @@ func (list *LinkedList) GetTail() *Node {
 }
 
 // LIFO
-func (list *LinkedList) Append(value int) {
-	node := &Node{Value: value, Next: nil}
+func (list *LinkedList[T]) Append(value T) {
+	node := &Node[T]{Value: value, Next: nil}
 
 	tail := list.GetTail() // pointer to the node object without next node item
 
@@ -83,13 +83,13 @@ func (list *LinkedList) Append(value int) {
 }
 
 // FIFO
-func (list *LinkedList) Push(value int) {
-	node := &Node{Value: value, Next: list.Head, Previous: nil}
+func (list *LinkedList[T]) Push(value T) {
+	node := &Node[T]{Value: value, Next: list.Head, Previous: nil}
 	list.Head.Previous = node
 	list.Head = node
 }
 
-func (list *LinkedList) Pop() int {
+func (list *LinkedList[T]) Pop() T {
 	tail := list.GetTail()
 	prevOfTail := list.GetTail().Previous
 	prevOfTail.Next = nil
@@ -98,7 +98,7 @@ func (list *LinkedList) Pop() int {
 	return tail.Value
 }
 
-func (list *LinkedList) Print() {
+func (list *LinkedList[T]) Print() {
 	if list.Length == 0 {
 		fmt.Println("[ ]")
 	}
@@ -121,7 +121,7 @@ func (list *LinkedList) Print() {
 	}
 }
 
-func (list *LinkedList) PrintExplicitly() {
+func (list *LinkedList[T]) PrintExplicitly() {
 	if list.Length == 1 {
 		list.GetTail().printExplicitly()
 	}

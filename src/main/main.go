@@ -6,27 +6,58 @@ import (
 )
 
 func main() {
-	list := models.LinkedList{}
+	integerList := models.LinkedList[int]{}
 
 	for i := 1; i <= 5; i++ {
-		list.Append(i)
+		integerList.Append(i)
 	}
 
 	for i := 10; i >= 5; i-- {
-		list.Push(i)
+		integerList.Push(i)
 	}
 
-	list.Print()
+	integerList.Print()
 
 	fmt.Println()
 	fmt.Println()
 
 	fmt.Println("Popping value")
-	val := list.Pop()
-	fmt.Println(val)
+	intVal := integerList.Pop()
+	fmt.Println(intVal)
 
 	fmt.Println()
 
-	list.PrintExplicitly()
-	fmt.Println(list.GetTail())
+	integerList.PrintExplicitly()
+	fmt.Println(integerList.GetTail())
+
+	fmt.Println()
+	fmt.Println()
+
+	stringList := models.LinkedList[string]{}
+
+	for i := 1; i <= 5; i++ {
+		stringList.Append(fmt.Sprintf("%s%d", "a", i))
+	}
+
+	for i := 10; i >= 5; i-- {
+		stringList.Push(fmt.Sprintf("%s%d", "b", i))
+	}
+
+	stringList.Print()
+
+	fmt.Println()
+	fmt.Println()
+
+	fmt.Println("Popping value")
+	strVal := stringList.Pop()
+	fmt.Println(strVal)
+
+	fmt.Println()
+
+	stringList.PrintExplicitly()
+	fmt.Println(stringList.GetTail())
+
+	fmt.Println()
+	fmt.Println()
+
 }
