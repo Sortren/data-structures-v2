@@ -52,6 +52,12 @@ func main() {
 	strVal := stringList.Pop()
 	fmt.Println("Popped value ->", strVal)
 	stringList.Show()
+
+	fmt.Print("\n\n")
+
+	strVal2 := stringList.DeleteAt(2)
+	fmt.Println("DeletedAt value ->", strVal2)
+	stringList.Show()
 }
 
 type Stack[T any] interface {
@@ -103,6 +109,15 @@ func (list *LinkedList[T]) Append(value T) {
 	}
 }
 
+func (list *LinkedList[T]) Pop() T {
+	tail := list.getTail()
+	prevOfTail := list.getTail().Previous
+	prevOfTail.Next = nil
+	tail.Previous = nil
+
+	return tail.Value
+}
+
 func (list *LinkedList[T]) AddAt(value T, index int) {
 	if index >= list.Length || index < 0 {
 		fmt.Println("can't add value at position out of list's range")
@@ -143,13 +158,35 @@ func (list *LinkedList[T]) AddAt(value T, index int) {
 
 }
 
-func (list *LinkedList[T]) Pop() T {
-	tail := list.getTail()
-	prevOfTail := list.getTail().Previous
-	prevOfTail.Next = nil
-	tail.Previous = nil
+func (list *LinkedList[T]) DeleteAt(index int) T {
+	var deletedValue T
+	if index >= list.Length || index < 0 {
+		fmt.Println("can't delete element at position out of list's range")
+		return deletedValue
+	}
 
-	return tail.Value
+	prev := &Node[T]{} // empty previous node to keep track of it
+	currentNode := list.Head
+
+	if index == 0 {
+		prev = list.Head
+		list.Head = currentNode.Next
+		return prev.Value
+	}
+
+	currentPosition := 0
+	for {
+		if currentPosition == index {
+			prev.Next = currentNode.Next
+			list.Length--
+			return currentNode.Value
+		} else {
+			prev = currentNode
+			currentNode = currentNode.Next
+			currentPosition++
+			continue
+		}
+	}
 }
 
 func (list *LinkedList[T]) Show() {
