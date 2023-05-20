@@ -201,18 +201,18 @@ func (list *LinkedList[T]) Show() {
 	}
 
 	if list.Length == 1 {
-		list.getTail().print(list.Length, "", true)
+		list.getTail().print(list.Length, "")
 	}
 
 	if list.Length > 1 {
 		currentNode := *list.Head
 
 		fmt.Print("[")
-		currentNode.print(list.Length, "", true)
+		currentNode.print(list.Length, "")
 
 		for currentNode.Next != nil {
 			currentNode = *currentNode.Next
-			currentNode.print(list.Length, ", ", false)
+			currentNode.print(list.Length, ", ")
 		}
 		fmt.Print("]\n")
 	}
@@ -236,7 +236,7 @@ func (list *LinkedList[T]) ShowAt(index int) {
 
 	for currentNode.Next != nil {
 		if currentPosition == index {
-			currentNode.print(list.Length, "", true)
+			currentNode.print(list.Length, "")
 			break
 		}
 
@@ -246,15 +246,15 @@ func (list *LinkedList[T]) ShowAt(index int) {
 	fmt.Print("]\n")
 }
 
-func (node *Node[T]) print(listLength int, delimiter string, isFirst bool) {
+func (node *Node[T]) print(listLength int, delimiter string) {
 	// print the node in the regular list way [val1, val2, val3, ...]
 
 	if listLength > 1 {
-		if isFirst {
+		if delimiter == "" {
 			fmt.Print(node.Value)
-		} else {
-			fmt.Print(delimiter, node.Value)
+			return
 		}
+		fmt.Print(delimiter, node.Value)
 	} else {
 		fmt.Println("[", node.Value, "]")
 	}
