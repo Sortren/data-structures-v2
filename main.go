@@ -58,6 +58,11 @@ func main() {
 	strVal2 := stringList.DeleteAt(2)
 	fmt.Println("DeletedAt value ->", strVal2)
 	stringList.Show()
+
+	fmt.Print("\n\n")
+
+	fmt.Println(stringList.Length)
+	stringList.ShowAt(5)
 }
 
 type Stack[T any] interface {
@@ -86,6 +91,7 @@ func (list *LinkedList[T]) Push(value T) {
 	node := &Node[T]{Value: value, Next: list.Head, Previous: nil}
 	list.Head.Previous = node
 	list.Head = node
+	list.Length++
 }
 
 // Append represents FIFO stack
@@ -210,6 +216,34 @@ func (list *LinkedList[T]) Show() {
 		}
 		fmt.Print("]\n")
 	}
+}
+
+func (list *LinkedList[T]) ShowAt(index int) {
+	if index >= list.Length || index < 0 {
+		fmt.Println("can't show value at position out of list's range")
+		return
+	}
+
+	if list.Length == 0 {
+		fmt.Println("[ ]")
+	}
+
+	currentPosition := 0
+
+	currentNode := *list.Head
+
+	fmt.Print("[")
+
+	for currentNode.Next != nil {
+		if currentPosition == index {
+			currentNode.print(list.Length, "", true)
+			break
+		}
+
+		currentNode = *currentNode.Next
+		currentPosition++
+	}
+	fmt.Print("]\n")
 }
 
 func (node *Node[T]) print(listLength int, delimiter string, isFirst bool) {
